@@ -16,7 +16,7 @@ public partial class AddContactPage : ContentPage
 		Shell.Current.GoToAsync("..");
     }
 
-    private void SaveButton_Clicked(object sender, EventArgs e)
+    private async void SaveButton_Clicked(object sender, EventArgs e)
     {
         ContactInfo contact = new ContactInfo();
     
@@ -25,8 +25,8 @@ public partial class AddContactPage : ContentPage
         contact.Email = EmailEntry.Text;
 
         ContactsRepository repository = new ContactsRepository();
-        repository.AddContact(contact);
-        Shell.Current.GoToAsync("..");
+       await repository.AddContact(contact);
+       await Shell.Current.GoToAsync("..");
 
     }
 }

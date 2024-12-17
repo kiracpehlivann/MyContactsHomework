@@ -10,29 +10,31 @@ namespace MyContacts.Model
 {
     public class ContactsRepository
     {
-         static List<ContactInfo> contacts = new List<ContactInfo>() { 
-                    new ContactInfo {Id=1, NameSurname="Hüseyin Şimşek", Email="huseyinsimsek@gmail", PhoneNumber="053357252"}
-                    };
-        static int maxId = 2;
+       ContactDatabase contactDatabase;
         public ContactsRepository()
         {
-            
+            contactDatabase = new ContactDatabase();
         }
 
-        public ObservableCollection<ContactInfo> GetContacts() {
-            return new ObservableCollection<ContactInfo>( contacts);
-
+        public  async Task<ObservableCollection<ContactInfo>> GetContacts() {
+            var contacts = await contactDatabase.GetAllContactsAsync();
+           
+            return new ObservableCollection<ContactInfo>(contacts); ;
         }
 
-        public void AddContact(ContactInfo contact)
+        public async Task AddContact(ContactInfo contact)
         {
-            contact.Id = maxId++;
-            contacts.Add(contact);
+            await contactDatabase.InsertContact(contact);
         }
 
-        public ContactInfo GetContact(int id)
+
+        public async Task DeleteContact(ContactInfo contact)
         {
-            return contacts.FirstOrDefault( c => c.Id==id ) ;
+            await contactDatabase.DeleteContact(contact);
+        }
+        public async Task<ContactInfo> GetContact(int id)
+        {
+            return  await contactDatabase.GetContactByIdAsync(id);
         }
 
     }

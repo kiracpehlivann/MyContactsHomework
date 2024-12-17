@@ -13,13 +13,13 @@ public partial class ContactsPage : ContentPage
 
         
     }
-
-    protected override void OnAppearing()
+ContactsRepository contactsRepository = new ContactsRepository();
+    protected async override  void OnAppearing()
     {
         base.OnAppearing();
-        ContactsRepository contactsRepository = new ContactsRepository();
-
-        ContactsList.ItemsSource=contactsRepository.GetContacts();
+        
+        
+        ContactsList.ItemsSource = await contactsRepository.GetContacts(); ;
     }
     private void AddContactButton_Clicked(object sender, EventArgs e)
     {

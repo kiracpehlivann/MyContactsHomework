@@ -8,6 +8,7 @@ namespace MyContacts.Views;
 public partial class EditContactPage : ContentPage
 {
     ContactsRepository repository = new ContactsRepository();
+    ContactInfo contact;
 
     public string id { get; set; }
 	public EditContactPage()
@@ -15,11 +16,23 @@ public partial class EditContactPage : ContentPage
         
 		InitializeComponent();
 	}
-    protected override void OnAppearing()
+    protected async override void OnAppearing()
     {
         base.OnAppearing();
         
-        var contact = repository.GetContact(Int32.Parse(id));
+        contact =await repository.GetContact(Int32.Parse(id));
         selectedContact.Text = id + " " + contact.NameSurname;
+    }
+
+    private async void DeleteButton_Clicked(object sender, EventArgs e)
+    {
+        bool answer = await DisplayAlert("Are you Sure?", "Are you sure to delete", "Yes", "No");
+        if (answer)
+        {
+            await repository.DeleteContact(contact);
+            await Shell.Current.GoToAsync("..");
+
+        }
+
     }
 }
